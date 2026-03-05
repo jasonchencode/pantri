@@ -1,7 +1,17 @@
 import type { MealIdea, PantryItem, PantryItemStatus } from '@types/pantry';
 
-// For running on a physical device, we must use the Mac's LAN IP, not localhost.
-const API_BASE_URL = 'http://192.168.2.14:4000/api';
+// No hardcoded IP – set via in-app config or EXPO_PUBLIC_API_URL at build time.
+export const API_BASE_URL_STORAGE_KEY = '@pantri/api_base_url';
+
+let _apiBaseUrl: string | null = null;
+
+function getApiBaseUrl(): string {
+  return _apiBaseUrl ?? process.env.EXPO_PUBLIC_API_URL ?? 'http://localhost:4000/api';
+}
+
+export function setApiBaseUrl(url: string): void {
+  _apiBaseUrl = url;
+}
 
 async function handleResponse<T>(res: Response): Promise<T> {
   if (!res.ok) {
@@ -12,7 +22,7 @@ async function handleResponse<T>(res: Response): Promise<T> {
 }
 
 export async function fetchPantryItems(): Promise<PantryItem[]> {
-  const res = await fetch(`${API_BASE_URL}/pantry-items`);
+  const res = await fetch(`${getApiBaseUrl()}/pantry-items`);
   return handleResponse<PantryItem[]>(res);
 }
 
@@ -24,7 +34,7 @@ interface CreatePantryItemInput {
 }
 
 export async function createPantryItem(input: CreatePantryItemInput): Promise<PantryItem> {
-  const res = await fetch(`${API_BASE_URL}/pantry-items`, {
+  const res = await fetch(`${getApiBaseUrl()}/pantry-items`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(input)
@@ -36,7 +46,7 @@ export async function updatePantryItemStatus(
   id: string,
   status: PantryItemStatus
 ): Promise<PantryItem> {
-  const res = await fetch(`${API_BASE_URL}/pantry-items/${id}`, {
+  const res = await fetch(`${getApiBaseUrl()}/pantry-items/${id}`, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ status })
@@ -45,7 +55,7 @@ export async function updatePantryItemStatus(
 }
 
 export async function deletePantryItem(id: string): Promise<void> {
-  const res = await fetch(`${API_BASE_URL}/pantry-items/${id}`, {
+  const res = await fetch(`${getApiBaseUrl()}/pantry-items/${id}`, {
     method: 'DELETE'
   });
   if (!res.ok) {
@@ -55,7 +65,7 @@ export async function deletePantryItem(id: string): Promise<void> {
 }
 
 export async function fetchMealIdeas(): Promise<MealIdea[]> {
-  const res = await fetch(`${API_BASE_URL}/meal-ideas`);
+  const res = await fetch(`${getApiBaseUrl()}/meal-ideas`);
   return handleResponse<MealIdea[]>(res);
 }
 

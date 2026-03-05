@@ -17,12 +17,15 @@ import { spacing } from '@theme/spacing';
 import type { RootStackParamList } from '@navigation/RootNavigator';
 import { fetchMealIdeas } from '@services/api';
 import type { MealIdea } from '@types/pantry';
+import { useShowConfigAgain } from '@context/ServerConfigContext';
+import { Pressable } from 'react-native';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Pantry'>;
 
 const PantryScreen: React.FC<Props> = ({ navigation }) => {
   const { items, loading, error, refresh, markStatus, removeItem } = usePantry();
   const [ideasLoading, setIdeasLoading] = React.useState(false);
+  const showConfigAgain = useShowConfigAgain();
 
   const handleGenerateIdeas = async () => {
     try {
@@ -44,6 +47,11 @@ const PantryScreen: React.FC<Props> = ({ navigation }) => {
           <Text style={styles.subtitle}>
             Add ingredients you already have to get waste-cutting meal ideas.
           </Text>
+          {showConfigAgain && (
+            <Pressable onPress={showConfigAgain} style={styles.changeServer}>
+              <Text style={styles.changeServerText}>Change server address</Text>
+            </Pressable>
+          )}
         </View>
 
         <View style={styles.actionsRow}>
@@ -113,6 +121,13 @@ const styles = StyleSheet.create({
   },
   header: {
     marginBottom: spacing.lg
+  },
+  changeServer: {
+    marginTop: spacing.sm
+  },
+  changeServerText: {
+    color: colors.textMuted,
+    fontSize: 13
   },
   title: {
     color: colors.text,
