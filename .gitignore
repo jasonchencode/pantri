@@ -23,9 +23,10 @@ logs
 dist
 build
 
-# Env & secrets
+# Env & secrets (keep .env.example so it's visible on GitHub)
 .env
 .env.*
+!.env.example
 
 # Prisma
 prisma/dev.db
