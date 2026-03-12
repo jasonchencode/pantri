@@ -3,11 +3,13 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import PantryScreen from '@screens/PantryScreen';
 import AddIngredientScreen from '@screens/AddIngredientScreen';
 import MealIdeasScreen from '@screens/MealIdeasScreen';
+import ReceiptScanScreen from '@screens/ReceiptScanScreen';
 
 export type RootStackParamList = {
   Pantry: undefined;
   AddIngredient: undefined;
   MealIdeas: undefined;
+  ReceiptScan: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -36,6 +38,11 @@ const RootNavigator = () => {
         name="MealIdeas"
         component={MealIdeasScreen}
         options={{ title: 'Meal Ideas' }}
+      />
+      <Stack.Screen
+        name="ReceiptScan"
+        component={ReceiptScanScreen}
+        options={{ title: 'Scan receipt (MVP)' }}
       />
     </Stack.Navigator>
   );

@@ -5,7 +5,7 @@ export const API_BASE_URL_STORAGE_KEY = '@pantri/api_base_url';
 
 let _apiBaseUrl: string | null = null;
 
-function getApiBaseUrl(): string {
+export function getApiBaseUrl(): string {
   return _apiBaseUrl ?? process.env.EXPO_PUBLIC_API_URL ?? 'http://localhost:4000/api';
 }
 

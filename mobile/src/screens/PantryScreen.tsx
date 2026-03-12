@@ -70,6 +70,13 @@ const PantryScreen: React.FC<Props> = ({ navigation }) => {
           </View>
         </View>
 
+        <View style={styles.secondaryActionsRow}>
+          <PrimaryButton
+            label="Scan receipt (MVP)"
+            onPress={() => navigation.navigate('ReceiptScan')}
+          />
+        </View>
+
         {loading && items.length === 0 ? (
           <View style={styles.center}>
             <ActivityIndicator color={colors.primary} />
@@ -142,6 +149,9 @@ const styles = StyleSheet.create({
   actionsRow: {
     flexDirection: 'row',
     gap: spacing.md,
+    marginBottom: spacing.lg
+  },
+  secondaryActionsRow: {
     marginBottom: spacing.lg
   },
   actionButton: {
