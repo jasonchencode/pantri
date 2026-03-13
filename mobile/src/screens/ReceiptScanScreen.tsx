@@ -1,91 +1,35 @@
-import React, { useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, Image, ActivityIndicator, Alert } from 'react-native';
+import React from 'react';
+import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '@navigation/RootNavigator';
 import { colors } from '@theme/colors';
 import { spacing } from '@theme/spacing';
 import PrimaryButton from '@components/PrimaryButton';
-import * as ImagePicker from 'expo-image-picker';
-import { scanReceipt } from '@services/receipts';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ReceiptScan'>;
 
 const ReceiptScanScreen: React.FC<Props> = () => {
-  const [imageUri, setImageUri] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [lastMessage, setLastMessage] = useState<string | null>(null);
-
-  const handlePickImage = async () => {
-    setLastMessage(null);
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== 'granted') {
-      Alert.alert('Permission needed', 'We need access to your photos to scan a receipt.');
-      return;
-    }
-
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: false,
-      quality: 0.8
-    });
-
-    if (!result.canceled && result.assets && result.assets.length > 0) {
-      setImageUri(result.assets[0].uri);
-    }
-  };
-
-  const handleScan = async () => {
-    if (!imageUri) {
-      Alert.alert('Select a photo', 'Pick a receipt photo first.');
-      return;
-    }
-
-    try {
-      setLoading(true);
-      setLastMessage(null);
-      const result = await scanReceipt(imageUri);
-      setLastMessage('Receipt scanned successfully via AWS Textract.');
-      // For now we do not show the raw JSON; that will come in a later iteration.
-      console.log('Textract result', result.raw);
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to scan receipt.';
-      setLastMessage(message);
-      Alert.alert('Scan failed', message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <SafeAreaView style={styles.safe}>
       <View style={styles.container}>
         <Text style={styles.title}>Scan a receipt</Text>
         <Text style={styles.subtitle}>
-          Pick a receipt photo and send it to pantri&apos;s backend. For the MVP, we just confirm that
-          AWS Textract processed the image.
+          This is a placeholder for the receipt scanning flow. We&apos;ll connect camera upload and
+          Textract later.
         </Text>
 
         <View style={styles.cameraMock}>
-          {imageUri ? (
-            <Image source={{ uri: imageUri }} style={styles.previewImage} resizeMode="cover" />
-          ) : (
-            <Text style={styles.cameraText}>No photo selected yet.</Text>
-          )}
+          <Text style={styles.cameraText}>Receipt camera preview coming soon</Text>
         </View>
 
         <View style={styles.actions}>
-          <PrimaryButton label="Choose photo" onPress={handlePickImage} disabled={loading} />
-          <View style={styles.spacing} />
-          <PrimaryButton
-            label={loading ? 'Scanning…' : 'Send to server'}
-            onPress={handleScan}
-            loading={loading}
-          />
-          {lastMessage && (
-            <View style={styles.helperTextContainer}>
-              <Text style={styles.helperText}>{lastMessage}</Text>
-            </View>
-          )}
+          <PrimaryButton label="Choose photo (coming soon)" onPress={() => {}} disabled />
+          <View style={styles.helperTextContainer}>
+            <Text style={styles.helperText}>
+              Later this screen will let users choose or snap a receipt photo, review detected items,
+              and add them to their pantri.
+            </Text>
+          </View>
         </View>
       </View>
     </SafeAreaView>
@@ -123,11 +67,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: spacing.lg
   },
-  previewImage: {
-    width: '100%',
-    height: '100%',
-    borderRadius: 16
-  },
   cameraText: {
     color: colors.textMuted,
     textAlign: 'center',
@@ -136,9 +75,6 @@ const styles = StyleSheet.create({
   actions: {
     marginTop: spacing.xl,
     marginBottom: spacing.lg
-  },
-  spacing: {
-    height: spacing.md
   },
   helperTextContainer: {
     marginTop: spacing.sm
