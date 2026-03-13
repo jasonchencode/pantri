@@ -4,6 +4,7 @@ import cors from 'cors';
 import pantryRoutes from './routes/pantry';
 import mealIdeasRoutes from './routes/mealIdeas';
 import receiptsRoutes from './routes/receipts';
+import mealPlanRoutes from './routes/mealPlan';
 
 const app = express();
 const PORT = process.env.PORT ?? 4000;
@@ -22,6 +23,7 @@ app.get('/health', (_req, res) => {
 app.use('/api', pantryRoutes);
 app.use('/api', mealIdeasRoutes);
 app.use('/api', receiptsRoutes);
+app.use('/api', mealPlanRoutes);
 
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console

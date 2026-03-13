@@ -14,6 +14,7 @@ model User {
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   pantryItems PantryItem[]
+  mealPlans   MealPlan[]
 }
 
 model PantryItem {
@@ -36,5 +37,32 @@ enum PantryItemStatus {
   AVAILABLE
   USED
   REMOVED
+}
+
+model MealPlan {
+  id        String        @id @default(cuid())
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  weekStart DateTime
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  days      MealPlanDay[]
+
+  @@index([userId, weekStart])
+}
+
+model MealPlanDay {
+  id         String   @id @default(cuid())
+  mealPlan   MealPlan @relation(fields: [mealPlanId], references: [id], onDelete: Cascade)
+  mealPlanId String
+  dayLabel   String
+  breakfast  String
+  lunch      String
+  dinner     String
+  sortOrder  Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([mealPlanId, sortOrder])
 }
 

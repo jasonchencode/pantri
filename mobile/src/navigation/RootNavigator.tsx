@@ -4,12 +4,14 @@ import PantryScreen from '@screens/PantryScreen';
 import AddIngredientScreen from '@screens/AddIngredientScreen';
 import MealIdeasScreen from '@screens/MealIdeasScreen';
 import ReceiptScanScreen from '@screens/ReceiptScanScreen';
+import WeeklyMealPlanScreen from '@screens/WeeklyMealPlanScreen';
 
 export type RootStackParamList = {
   Pantry: undefined;
   AddIngredient: undefined;
   MealIdeas: undefined;
   ReceiptScan: undefined;
+  WeeklyMealPlan: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -43,6 +45,11 @@ const RootNavigator = () => {
         name="ReceiptScan"
         component={ReceiptScanScreen}
         options={{ title: 'Scan receipt (MVP)' }}
+      />
+      <Stack.Screen
+        name="WeeklyMealPlan"
+        component={WeeklyMealPlanScreen}
+        options={{ title: 'Weekly Plan' }}
       />
     </Stack.Navigator>
   );

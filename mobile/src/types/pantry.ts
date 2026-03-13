@@ -16,3 +16,22 @@ export interface MealIdea {
   description: string;
 }
 
+export interface MealPlanDay {
+  id: string;
+  dayLabel: string;
+  breakfast: string;
+  lunch: string;
+  dinner: string;
+  sortOrder: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface MealPlan {
+  id: string;
+  weekStart: string;
+  createdAt: string;
+  updatedAt: string;
+  days: MealPlanDay[];
+}
+

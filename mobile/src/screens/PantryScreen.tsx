@@ -72,6 +72,13 @@ const PantryScreen: React.FC<Props> = ({ navigation }) => {
 
         <View style={styles.secondaryActionsRow}>
           <PrimaryButton
+            label="Weekly Plan"
+            onPress={() => navigation.navigate('WeeklyMealPlan')}
+          />
+        </View>
+
+        <View style={styles.secondaryActionsRow}>
+          <PrimaryButton
             label="Scan receipt (MVP)"
             onPress={() => navigation.navigate('ReceiptScan')}
           />

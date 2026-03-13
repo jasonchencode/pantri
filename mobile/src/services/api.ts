@@ -1,4 +1,4 @@
-import type { MealIdea, PantryItem, PantryItemStatus } from '@types/pantry';
+import type { MealIdea, MealPlan, PantryItem, PantryItemStatus } from '@types/pantry';
 
 // No hardcoded IP – set via in-app config or EXPO_PUBLIC_API_URL at build time.
 export const API_BASE_URL_STORAGE_KEY = '@pantri/api_base_url';
@@ -67,5 +67,28 @@ export async function deletePantryItem(id: string): Promise<void> {
 export async function fetchMealIdeas(): Promise<MealIdea[]> {
   const res = await fetch(`${getApiBaseUrl()}/meal-ideas`);
   return handleResponse<MealIdea[]>(res);
+}
+
+export async function fetchCurrentMealPlan(): Promise<MealPlan | null> {
+  const res = await fetch(`${getApiBaseUrl()}/meal-plan/current`);
+  return handleResponse<MealPlan | null>(res);
+}
+
+export async function generateMealPlan(): Promise<MealPlan> {
+  const res = await fetch(`${getApiBaseUrl()}/meal-plan/generate`, {
+    method: 'POST'
+  });
+  return handleResponse<MealPlan>(res);
+}
+
+export async function deleteMealPlan(id: string): Promise<void> {
+  const res = await fetch(`${getApiBaseUrl()}/meal-plan/${id}`, {
+    method: 'DELETE'
+  });
+
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(text || 'Failed to delete meal plan');
+  }
 }
 
